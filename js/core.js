@@ -18,7 +18,7 @@ export const DB={
  async put(store,rec){const d=await openDB();return reqp(d.transaction(store,'readwrite').objectStore(store).put(rec))},
  async get(store,id){const d=await openDB();return reqp(d.transaction(store).objectStore(store).get(id))},
  async del(store,id){const d=await openDB();return reqp(d.transaction(store,'readwrite').objectStore(store).delete(id))},
- async all(store){const d=await openDB();return reqp(d.transaction(store).readonly').objectStore(store).getAll())},
+ async all(store){const d=await openDB();return reqp(d.transaction(store,'readonly').objectStore(store).getAll())},
  async recs(type,orgId){const all=await DB.all('records');return all.filter(r=>r.type===type&&(orgId===undefined||r.orgId===orgId))},
  async rec(type,orgId){const l=await DB.recs(type,orgId);return l[0]||null},
  async putRec(type,orgId,data,id){const rec={id:id||uid(),type,orgId:orgId||null,data,ts:nowISO()};await DB.put('records',rec);return rec},
