@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Tradestack Tests</title></head>
+<body style="font-family:monospace;padding:20px"><h2>Unit tests</h2><pre id="o"></pre>
+<script type="module">
+import* as E from'./js/engines.js';
+const o=[];const t=(n,c)=>{try{c();o.push('PASS '+n)}catch(e){o.push('FAIL '+n+' :: '+e.message)}};
+const eq=(a,b,m)=>{if(a!==b)throw new Error(m||a+'!='+b)};
+t('compliance blocks hate',()=>eq(E.complianceCheck('you idiot','facebook',[]).level,'blocked'));
+t('compliance flags health claim',()=>eq(E.complianceCheck('this cures acne','facebook',[]).level,'high'));
+t('compliance safe',()=>eq(E.complianceCheck('Hello, try our new menu','facebook',['food']).level,'safe'));
+t('rewrite softens guarantee',()=>{const r=E.complianceCheck('Results guaranteed','facebook',[]);if(!r.rewrite||!/designed to deliver/i.test(r.rewrite))throw new Error('no rewrite')});
+t('hashtag caps',()=>{const org={business:{name:'X Co',industry:'coffee',location:'Nairobi'},marketing:{}};const h=E.hashtagSets(org,{topic:'latte'},'x');if(h.flat.length>2)throw new Error('x cap')});
+t('similarity',()=>{if(E.jaccard(['a','b'],['a','b'])!==1)throw new Error('j')});
+t('best times returns 5',()=>eq(E.bestTimes('facebook',[]).top.length,5));
+t('best times confidence low w/o data',()=>{if(!E.bestTimes('instagram',[]).top[0].confidence.includes('Low'))throw new Error('conf')});
+t('plan size',()=>{const org={marketing:{platforms:['facebook'],frequency:3},products:[{name:'P'}],pillars:[{name:'Education'}]};const p=E.buildPlan(org,[],30);if(p.length<3)throw new Error(p.length)});
+t('repetition warns',()=>{if(!E.repetitionCheck('the quick brown fox jumps over the dog',[{caption:'the quick brown fox jumps over the dog'}]).warn)throw new Error('rep')});
+t('trend scoring ranks relevant',()=>{const org={business:{industry:'coffee',niche:'espresso'}};const s=E.scoreTrends(org,[{title:'espresso machines trending',date:new Date().toISOString()},{title:'quantum computing chips',date:new Date().toISOString()}]);if(s[0].title.indexOf('espresso')<0)throw new Error('rank')});
+document.getElementById('o').textContent=o.join('\n');document.title=o.some(x=>x.startsWith('FAIL'))?'TESTS FAILED':'TESTS PASS';
+</script></body></html>
