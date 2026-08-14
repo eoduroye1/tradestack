@@ -30,7 +30,7 @@ export async function metaPublish(conn,message){const sec=await DB.get('records'
  await DB.putRec('connection',Session.orgId,Object.assign(conn.data,{lastSync:nowISO()}),conn.id);
  if(!r.id)throw new Error('No post id returned');return r.id}
 export async function metaInsights(conn,postId){const sec=await DB.get('records',conn.secretId);const{token}=await decJSON(Session.key,sec.data);
- const r=await fbApi('/'+postId+'/insights',{metric:'post_impressions,post_engaged_users'},'get',{access_token:token}).catch(()=>fbApi('/'+postId+'?fields=shares',{access_token:token}));
+ const r=await fbApi('/'+postId+'/insights','get',{metric:'post_impressions,post_engaged_users',access_token:token}).catch(()=>fbApi('/'+postId+'?fields=shares',{access_token:token}));
  let reach=0,eng=0;for(const m of (r.data||[])){if(m.name==='post_impressions')reach+=m.values.reduce((s,v)=>s+v.value,0);if(m.name==='post_engaged_users')eng+=m.values.reduce((s,v)=>s+v.value,0)}
  return{reach,engagement:eng}}
 // ---- scheduler ----
