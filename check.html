@@ -1,14 +1,18 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>Tradestack Check</title>
 <style>body{font-family:monospace;padding:20px}p{padding:4px}</style></head>
-<body><h2>Tradestack file check</h2><div id="o"><p>Checking…</p></div>
+<body><h2>Tradestack file check v2</h2><div id="o"><p>Checking…</p></div>
 <div id="app" hidden></div><div id="modal-root" hidden></div><div id="toast-root" hidden></div>
 <script type="module">
 const o=document.getElementById('o');
-const files=['./js/core.js','./js/engines.js','./js/platforms.js','./js/ui.js','./js/views.js','./app.js'];
+const files=['./js/core.js','./js/engines.js','./js/platforms.js','./js/views.js','./js/ui.js','./app.js'];
 for(const f of files){
   try{await import(f+'?t='+Date.now());o.innerHTML+='<p style="color:green">OK — '+f+'</p>';}
-  catch(e){o.innerHTML+='<p style="color:red">PROBLEM IN '+f+' → '+e.message+'</p>';}
+  catch(e){
+    let loc=e.lineNumber?(' LINE '+e.lineNumber+(e.columnNumber?':'+e.columnNumber:'')):'';
+    const m=(e.stack||'').match(/https?:[^\s)]+\.js:[0-9]+:[0-9]+/g);
+    o.innerHTML+='<p style="color:red">PROBLEM IN '+f+loc+' → '+e.message+'<br><small>'+(m?m.join(' | '):(e.stack||'').slice(0,400))+'</small></p>';
+  }
 }
-o.innerHTML+='<p><b>Done.</b></p>';
+o.innerHTML+='<p><b>Done — copy everything in red and send it.</b></p>';
 </script></body></html>
