@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Tradestack Check</title>
+<style>body{font-family:monospace;padding:20px}p{padding:4px}</style></head>
+<body><h2>Tradestack file check</h2><div id="o"><p>Checking…</p></div>
+<div id="app" hidden></div><div id="modal-root" hidden></div><div id="toast-root" hidden></div>
+<script type="module">
+const o=document.getElementById('o');
+const files=['./js/core.js','./js/engines.js','./js/platforms.js','./js/ui.js','./js/views.js','./app.js'];
+for(const f of files){
+  try{await import(f+'?t='+Date.now());o.innerHTML+='<p style="color:green">OK — '+f+'</p>';}
+  catch(e){o.innerHTML+='<p style="color:red">PROBLEM IN '+f+' → '+e.message+'</p>';}
+}
+o.innerHTML+='<p><b>Done.</b></p>';
+</script></body></html>
