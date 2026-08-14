@@ -1,5 +1,5 @@
 // views.js — all workspace views
-import{DB,Session,esc,uid,getSettings,saveSettings,audit,notify,nowISO}from'./core.js';
+import{DB,Session,esc,uid,ls,getSettings,saveSettings,audit,notify,nowISO}from'./core.js';
 import* as E from'./engines.js';import* as P from'./platforms.js';import{toast,openModal,closeModal,setOrgCache}from'./ui.js';
 export const fld=(schema,data)=>schema.map(([k,l,req,type,opts])=>{const v=data[k]??'';const id='f_'+k;const h=type==='textarea'?`<textarea id="${id}" name="${k}" rows="3">${esc(v)}</textarea>`:type==='select'?`<select id="${id}" name="${k}">${(opts||[]).map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('')}</select>`:`<input id="${id}" name="${k}" type="${type||'text'}" value="${esc(v)}" ${type==='number'?'step=any':''}>`;return`<label for="${id}">${l}${req?' <span class="req">*</span>':''}</label>${h}`}).join('');
 export async function saveMedia(file){const id=uid();const buf=await file.arrayBuffer();
