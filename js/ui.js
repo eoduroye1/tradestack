@@ -85,7 +85,7 @@ export async function onboarding(){const st=window.__wiz=window.__wiz||{step:0,b
   if(b.dataset.w==='next'||b.dataset.w==='skip'){collect();st.step++;onboarding()}else{st.step--;onboarding()}});
  function collect(){const f=$('#app');const grab=n=>{const i=f.querySelector(`[name=${n}]`);return i?i.value:undefined};
   if(st.step===0)['name','description','industry','niche','subniche','location','regions','website','email','phone','whatsapp','address','hours','delivery','languages','target'].forEach(k=>{const v=grab(k);if(v!==undefined)st.business[k]=v});
-  if(st.step===1){['slogan','voice','personality','tone','useWords','avoidWords'].forEach(k=>{const v=grab(k);if(v!==undefined)st.brand[k]=v});st.brand.colours={primary:f.querySelector('[name=c1]').value,secondary:f.querySelector('[name=c2]').value)};
+  if(st.step===1){['slogan','voice','personality','tone','useWords','avoidWords'].forEach(k=>{const v=grab(k);if(v!==undefined)st.brand[k]=v});st.brand.colours={primary:f.querySelector('[name=c1]').value,secondary:f.querySelector('[name=c2]').value};
    const lu=f.querySelector('#logoUp');if(lu&&lu.files[0])V.saveMedia(lu.files[0]).then(m=>st.brand.logoMedia=m.id)}
   if(st.step===2){const add=f.querySelector('#padd');if(add)add.onclick=()=>{const p={};[['pname','name'],['pdesc','description'],['pcat','category'],['pprice','price'],['pfeat','features'],['pben','benefits'],['ptarget','target'],['pprob','problems'],['pusp','usp'],['purl','url'],['pclaims','allowedClaims'],['pnoclaims','forbiddenClaims']].forEach(([a,b2])=>{const v=grab(a);if(v)p[b2]=v});if(p.name){st.products.push(p);toast('Product added','ok');onboarding()}};
    f.querySelectorAll('[data-del]').forEach(d=>d.onclick=()=>{st.products.splice(+d.dataset.del,1);onboarding()})}
