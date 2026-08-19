@@ -56,7 +56,7 @@ export async function boot(){closeModal();const sec=await DB.get('records','auth
  $('#app').innerHTML=`<div class="lock card"><img src="assets/logo.png" alt="" onerror="this.style.display='none'"><h1>Tradestack Marketing Agent</h1><form id="f"><label for="p">Passcode</label><input id="p" type="password" required><p class="err" id="e"></p><button class="gold">Unlock</button></form></div>`;
  $('#f').onsubmit=async e=>{e.preventDefault();const d=sec.data;const h=await hashPass($('#p').value,d.salt);
   if(h!==d.hash)return $('#e').textContent='Wrong passcode';Session.key=await makeKey($('#p').value,d.salt);Session.unlocked=true;
-  Session.orgId=ls.get('org',null);if(Session.orgId)await setOrgCache();shell();if(Session.orgId)route()};}
+  Session.orgId=ls.get('org',null);if(Session.orgId)await setOrgCache();await shell();if(Session.orgId)route()};}
 // ---------- ONBOARDING ----------
 const WSTEPS=['Business','Brand','Products','Audience','Marketing Goals','Social Accounts','Content Preferences','Review','Launch'];
 export async function onboarding(){const st=window.__wiz=window.__wiz||{step:0,business:{},brand:{colours:{}},marketing:{},products:[]};
