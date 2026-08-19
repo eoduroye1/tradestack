@@ -19,7 +19,7 @@ export async function shell(){const orgs=await DB.recs('org');const org=orgs.fin
 export async function route(){if(!Session.unlocked)return boot();if(!Session.orgId)return onboarding();
  const r=(location.hash||'#/dashboard').slice(2);document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===r));
  const M={dashboard,V:1};// dispatch
- const f=VIEWS[r]||VIEWS.dashboard;$('#main').innerHTML='<p class="muted">Loading…</p>';await f($('#main'))}
+ const f=VIEWS[r]||VIEWS.dashboard;if(!$('#main')){await shell();}$('#main').innerHTML='<p class="muted">Loading…</p>';await f($('#main'))}
 const VIEWS={dashboard,dash:dashboard,assistant:V.assistant,studio:V.studio,calendar:V.calendar,trends:V.trends,campaigns:V.campaigns,accounts:V.accounts,analytics:V.analytics,media:V.media,brand:V.brand,products:V.products,audience:V.audience,automation:V.automation,settings:V.settings,admin:V.admin,help:V.help};
 async function dashboard(el){const posts=await DB.recs('schedule',Session.orgId);const due=posts.filter(p=>['due','failed'].includes(p.status));
  const review=posts.filter(p=>p.status==='needs_review');const conns=await DB.recs('connection',Session.orgId);
